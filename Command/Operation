@@ -1,0 +1,15 @@
+package Command;
+
+abstract class Operation {
+    protected String operation_name;
+
+    public abstract void execute();
+
+    public String getOperationName() {
+        return operation_name;
+    }
+
+    public void setOperationName(String name) {
+        this.operation_name = name;
+    }
+}
