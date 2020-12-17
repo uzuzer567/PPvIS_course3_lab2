@@ -20,9 +20,10 @@ public class User {
 
     }
 
-    User(String login, String password) {
+    User(String login, String password, int accessLevel) {
         this.login = login;
         this.password = password;
+        this.accessLevel = accessLevel;
     }
 
     public void setLimitations(double amount) {
@@ -116,7 +117,7 @@ public class User {
         JTextField textFieldPassword = new JTextField();
         textFieldPassword.setMaximumSize(new Dimension(370,50));
         
-        JLabel labelAccessLevel = new JLabel(" Access level");
+        JLabel labelAccessLevel = new JLabel(" Access level (1 - head / 0 - not head");
         labelAccessLevel.setSize(100,50);
         JTextField textFieldAccessLevel = new JTextField();
         textFieldAccessLevel.setMaximumSize(new Dimension(370,50));
