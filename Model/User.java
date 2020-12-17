@@ -115,6 +115,11 @@ public class User {
         labelPassword.setSize(100,50);
         JTextField textFieldPassword = new JTextField();
         textFieldPassword.setMaximumSize(new Dimension(370,50));
+        
+        JLabel labelAccessLevel = new JLabel(" Access level");
+        labelAccessLevel.setSize(100,50);
+        JTextField textFieldAccessLevel = new JTextField();
+        textFieldAccessLevel.setMaximumSize(new Dimension(370,50));
 
         JButton button = new JButton("Add");
         button.setMaximumSize(new Dimension(100,50));
@@ -137,6 +142,8 @@ public class User {
         jPanel.add(textFieldLogin);
         jPanel.add(labelPassword);
         jPanel.add(textFieldPassword);
+        jPanel.add(labelAccessLevel);
+        jPanel.add(textFieldAccessLevel);
         jPanel.add(button);
         jPanel.add(label);
         jPanel.add(buttonBack);
