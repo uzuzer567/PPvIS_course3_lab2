@@ -1,0 +1,376 @@
+package Model;
+import Command.*;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class Manager {
+    TopUpAccount topUpAccount;
+    WithdrawFunds withdrawFunds;
+    ViewFunds viewFunds;
+    ViewStatistics viewStatistics;
+    AddCompulsoryCost addCompulsoryCost;
+    ViewCompulsoryCosts viewCompulsoryCosts;
+    Forecast forecast;
+
+    IncomeExpenseStatistics incomeExpenseStatistics = new IncomeExpenseStatistics();;
+    Funds funds = new Funds();
+    CompulsoryCosts compulsoryCosts = new CompulsoryCosts();
+    User user = new User();
+
+    public Manager() {
+        createOperations();
+        //input();
+        selectOperation();
+    }
+
+    public void createOperations() {
+        viewCompulsoryCosts = new ViewCompulsoryCosts();
+        addCompulsoryCost = new AddCompulsoryCost();
+        viewFunds = new ViewFunds();
+        withdrawFunds = new WithdrawFunds();
+        topUpAccount = new TopUpAccount();
+        forecast = new Forecast();
+        viewStatistics = new ViewStatistics();
+    }
+
+    public void input() {
+        JFrame jframe = new JFrame();
+        jframe.setSize(1450,300);
+        JPanel jpanel = new JPanel();
+        jpanel.setLayout(new BoxLayout(jpanel,BoxLayout.LINE_AXIS));
+        JLabel label0 = new JLabel("         ");
+        label0.setSize(100,50);
+
+        JLabel jlabelLogin = new JLabel();
+        jlabelLogin.setText("Login     ");
+        JTextField jTextFieldLogin = new JTextField();
+        jTextFieldLogin.setMaximumSize(new Dimension(400,50));
+        JLabel label1 = new JLabel("         ");
+        label1.setSize(100,50);
+
+        JLabel jlabelPassword = new JLabel();
+        jlabelPassword.setText("Password     ");
+        JTextField jTextFieldPassword = new JTextField();
+        jTextFieldPassword.setMaximumSize(new Dimension(400,50));
+        JButton jButton = new JButton();
+        jButton.setMaximumSize(new Dimension(400,50));
+        JLabel label2 = new JLabel("         ");
+        label2.setSize(100,50);
+
+        jButton.setText("Log in");
+        jButton.addActionListener(actionEvent ->
+        {
+            if (authentication(jTextFieldLogin.getText(),jTextFieldPassword.getText())) {
+                selectOperation();
+                jframe.dispose();
+            }
+            else {
+                input();
+            }
+            jframe.dispose();
+        });
+
+        jpanel.add(label0);
+        jpanel.add(jlabelLogin);
+        jpanel.add(jTextFieldLogin);
+        jpanel.add(label1);
+        jpanel.add(jlabelPassword);
+        jpanel.add(jTextFieldPassword);
+        jpanel.add(label2);
+        jpanel.add(jButton);
+        jframe.add(jpanel);
+        jframe.setVisible(true);
+    }
+
+    public boolean authentication (String login, String password) {
+        return true;
+    }
+
+    public void selectOperation() {
+            JFrame frame = new JFrame();
+            frame.setSize(1600, 300);
+            JPanel jpanel = new JPanel();
+            jpanel.setLayout(new BoxLayout(jpanel, BoxLayout.X_AXIS));
+       // if (user.checkAccessLevel() == 1) {
+            JLabel label0 = new JLabel("       ");
+            label0.setSize(100, 50);
+
+            JButton buttonAddFamilyMember = new JButton();
+            buttonAddFamilyMember.setText("Add family member");
+            buttonAddFamilyMember.setSize(400, 50);
+            buttonAddFamilyMember.addActionListener(actionEvent -> {
+                user.addFamilyMember();
+            });
+            JLabel label1 = new JLabel("   ");
+            label1.setSize(100, 50);
+
+            JButton buttonDeleteFamilyMember = new JButton();
+            buttonDeleteFamilyMember.setText("Delete family member");
+            buttonDeleteFamilyMember.setSize(400, 50);
+            buttonDeleteFamilyMember.addActionListener(actionEvent -> {
+                user.deleteFamilyMember();
+            });
+            JLabel label2 = new JLabel("   ");
+            label2.setSize(100, 50);
+
+            JButton buttonCreateLimitations = new JButton();
+            buttonCreateLimitations.setText("Create limitations");
+            buttonCreateLimitations.setSize(400, 50);
+            buttonCreateLimitations.addActionListener(actionEvent -> {
+                user.createLimitation();
+            });
+            JLabel label3 = new JLabel("   ");
+            label3.setSize(100, 50);
+
+            JButton buttonViewCompulsoryCost = new JButton();
+            buttonViewCompulsoryCost.setText("View compulsory cost");
+            buttonViewCompulsoryCost.setSize(400, 50);
+            buttonViewCompulsoryCost.addActionListener(actionEvent -> {
+                viewCompulsoryCosts.viewCompulsoryCost(compulsoryCosts.getCompulsoryCosts());
+                viewCompulsoryCosts.execute();
+            });
+            JLabel label4 = new JLabel("   ");
+            label4.setSize(100, 50);
+
+            JButton buttonAddCompulsoryCost = new JButton();
+            buttonAddCompulsoryCost.setText("Add compulsory cost");
+            buttonAddCompulsoryCost.setSize(400, 50);
+            buttonAddCompulsoryCost.addActionListener(actionEvent -> {
+                addCompulsoryCost.execute();
+                addCompulsoryCost.addCompulsoryCost(compulsoryCosts.getCompulsoryCosts());
+            });
+            JLabel label5 = new JLabel("   ");
+            label5.setSize(100, 50);
+
+            JButton buttonViewAccountBalance = new JButton();
+            buttonViewAccountBalance.setText("View account balance");
+            buttonViewAccountBalance.setSize(400, 50);
+            buttonViewAccountBalance.addActionListener(actionEvent -> {
+                if (funds.getFunds().size() == 0) {
+                    viewFunds.execute();
+                }
+                else {
+                    viewFunds.viewFunds(funds.getFunds().get(funds.getFunds().size()));
+                    viewFunds.execute();
+                }
+            });
+            JLabel label6 = new JLabel("   ");
+            label6.setSize(100, 50);
+
+            JButton buttonWithdrawMoney = new JButton();
+            buttonWithdrawMoney.setText("Withdraw money");
+            buttonWithdrawMoney.setSize(400, 50);
+            buttonWithdrawMoney.addActionListener(actionEvent -> {
+                withdrawFunds.execute();
+                if (withdrawFunds.checkLimitations(user.getLimitations()) && withdrawFunds.checkFunds(funds.getFunds().get(funds.getFunds().size()))) {
+                    withdrawFunds.withdrawFunds(funds.getFunds().get(funds.getFunds().size()));
+                }
+                else {
+                    return;
+                }
+            });
+            JLabel label7 = new JLabel("   ");
+            label7.setSize(100, 50);
+
+            JButton buttonTopUpAccount = new JButton();
+            buttonTopUpAccount.setText("Top up account");
+            buttonTopUpAccount.setSize(400, 50);
+            buttonTopUpAccount.addActionListener(actionEvent -> {
+                topUpAccount.execute();
+                if (funds.getFunds().size() == 0) {
+                    return;
+                }
+                else {
+                    topUpAccount.topUpAccount(funds.getFunds().get(funds.getFunds().size()));
+                }
+            });
+            JLabel label8 = new JLabel("   ");
+            label8.setSize(100, 50);
+
+            JButton buttonForecast = new JButton();
+            buttonForecast.setText("Forecast");
+            buttonForecast.setSize(400, 50);
+            buttonForecast.addActionListener(actionEvent -> {
+                if (compulsoryCosts.getCompulsoryCosts().size() == 0 || funds.getFunds().size() == 0){
+                    return;
+                }
+                else {
+                    forecast.predict(compulsoryCosts.getCompulsoryCosts(), funds.getFunds().get(funds.getFunds().size()));
+                    forecast.execute();
+                }
+            });
+            JLabel label9 = new JLabel("   ");
+            label9.setSize(100, 50);
+
+            JButton buttonViewStatistics = new JButton();
+            buttonViewStatistics.setText("View statistics");
+            buttonViewStatistics.setSize(400, 50);
+            buttonViewStatistics.addActionListener(actionEvent -> {
+                if (incomeExpenseStatistics.getExpenses().size() == 0) {
+                    viewStatistics.viewIncomeExpenseStatistics(incomeExpenseStatistics.getIncomes(), incomeExpenseStatistics.getExpenses());
+                    viewStatistics.execute();
+                }
+            });
+            JLabel label10 = new JLabel("   ");
+            label10.setSize(100, 50);
+
+            JButton buttonExit = new JButton();
+            buttonExit.setText("Exit");
+            buttonExit.setSize(400, 50);
+            buttonExit.addActionListener(actionEvent -> {
+                System.exit(0);
+            });
+
+            jpanel.add(label0);
+            jpanel.add(buttonAddFamilyMember);
+            jpanel.add(label1);
+            jpanel.add(buttonDeleteFamilyMember);
+            jpanel.add(label2);
+            jpanel.add(buttonCreateLimitations);
+            jpanel.add(label3);
+            jpanel.add(buttonViewCompulsoryCost);
+            jpanel.add(label4);
+            jpanel.add(buttonAddCompulsoryCost);
+            jpanel.add(label5);
+            jpanel.add(buttonViewAccountBalance);
+            jpanel.add(label6);
+            jpanel.add(buttonWithdrawMoney);
+            jpanel.add(label7);
+            jpanel.add(buttonTopUpAccount);
+            jpanel.add(label8);
+            jpanel.add(buttonForecast);
+            jpanel.add(label9);
+            jpanel.add(buttonViewStatistics);
+            jpanel.add(label10);
+            jpanel.add(buttonExit);
+        //}
+        /*else if (user.checkAccessLevel() == 0){
+            JButton buttonViewCompulsoryCost = new JButton();
+            buttonViewCompulsoryCost.setText("View compulsory cost");
+            buttonViewCompulsoryCost.setSize(400, 50);
+            buttonViewCompulsoryCost.addActionListener(actionEvent -> {
+                if (compulsoryCosts.getCompulsoryCosts().size() == 0) {
+                    return;
+                }
+                else {
+                    viewCompulsoryCosts.viewCompulsoryCost(compulsoryCosts.getCompulsoryCosts());
+                    viewCompulsoryCosts.execute();
+                }
+            });
+            JLabel label4 = new JLabel("   ");
+            label4.setSize(100, 50);
+
+            JButton buttonAddCompulsoryCost = new JButton();
+            buttonAddCompulsoryCost.setText("Add compulsory cost");
+            buttonAddCompulsoryCost.setSize(400, 50);
+            buttonAddCompulsoryCost.addActionListener(actionEvent -> {
+                addCompulsoryCost.execute();
+                addCompulsoryCost.addCompulsoryCost(compulsoryCosts.getCompulsoryCosts());
+            });
+            JLabel label5 = new JLabel("   ");
+            label5.setSize(100, 50);
+
+            JButton buttonViewAccountBalance = new JButton();
+            buttonViewAccountBalance.setText("View account balance");
+            buttonViewAccountBalance.setSize(400, 50);
+            buttonViewAccountBalance.addActionListener(actionEvent -> {
+                if (funds.getFunds().size() == 0) {
+                    return;
+                }
+                else {
+                    viewFunds.viewFunds(funds.getFunds().get(funds.getFunds().size()));
+                    viewFunds.execute();
+                }
+            });
+            JLabel label6 = new JLabel("   ");
+            label6.setSize(100, 50);
+
+            JButton buttonWithdrawMoney = new JButton();
+            buttonWithdrawMoney.setText("Withdraw money");
+            buttonWithdrawMoney.setSize(400, 50);
+            buttonWithdrawMoney.addActionListener(actionEvent -> {
+                withdrawFunds.execute();
+                if (withdrawFunds.checkLimitations(user.getLimitations()) && withdrawFunds.checkFunds(funds.getFunds().get(funds.getFunds().size()))) {
+                    withdrawFunds.withdrawFunds(funds.getFunds().get(funds.getFunds().size()));
+                }
+                else {
+                    return;
+                }
+            });
+            JLabel label7 = new JLabel("   ");
+            label7.setSize(100, 50);
+
+            JButton buttonTopUpAccount = new JButton();
+            buttonTopUpAccount.setText("Top up account");
+            buttonTopUpAccount.setSize(400, 50);
+            buttonTopUpAccount.addActionListener(actionEvent -> {
+                topUpAccount.execute();
+                if (funds.getFunds().size() == 0) {
+                    return;
+                }
+                else {
+                    topUpAccount.topUpAccount(funds.getFunds().get(funds.getFunds().size()));
+                }
+            });
+            JLabel label8 = new JLabel("   ");
+            label8.setSize(100, 50);
+
+            JButton buttonForecast = new JButton();
+            buttonForecast.setText("Forecast");
+            buttonForecast.setSize(400, 50);
+            buttonForecast.addActionListener(actionEvent -> {
+                if (compulsoryCosts.getCompulsoryCosts().size() == 0 || funds.getFunds().size() == 0){
+                    return;
+                }
+                else {
+                    forecast.predict(compulsoryCosts.getCompulsoryCosts(), funds.getFunds().get(funds.getFunds().size()));
+                    forecast.execute();
+                }
+            });
+            JLabel label9 = new JLabel("   ");
+            label9.setSize(100, 50);
+
+            JButton buttonViewStatistics = new JButton();
+            buttonViewStatistics.setText("View statistics");
+            buttonViewStatistics.setSize(400, 50);
+            buttonViewStatistics.addActionListener(actionEvent -> {
+                if (incomeExpenseStatistics.getExpenses().size() == 0) {
+                    viewStatistics.viewIncomeExpenseStatistics(incomeExpenseStatistics.getIncomes(), incomeExpenseStatistics.getExpenses());
+                    viewStatistics.execute();
+                }
+            });
+            JLabel label10 = new JLabel("   ");
+            label10.setSize(100, 50);
+
+            JButton buttonExit = new JButton();
+            buttonExit.setText("Exit");
+            buttonExit.setSize(400, 50);
+            buttonExit.addActionListener(actionEvent -> {
+                System.exit(0);
+            });
+
+            jpanel.add(label0);
+            jpanel.add(buttonViewCompulsoryCost);
+            jpanel.add(label4);
+            jpanel.add(buttonAddCompulsoryCost);
+            jpanel.add(label5);
+            jpanel.add(buttonViewAccountBalance);
+            jpanel.add(label6);
+            jpanel.add(buttonWithdrawMoney);
+            jpanel.add(label7);
+            jpanel.add(buttonTopUpAccount);
+            jpanel.add(label8);
+            jpanel.add(buttonForecast);
+            jpanel.add(label9);
+            jpanel.add(buttonViewStatistics);
+            jpanel.add(label10);
+            jpanel.add(buttonExit);
+        }
+
+         */
+            frame.add(jpanel);
+            frame.setVisible(true);
+
+    }
+}
